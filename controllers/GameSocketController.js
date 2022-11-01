@@ -287,7 +287,13 @@ class GameSocketController{
                             this.getScore( this.rooms[room], ws)
                             break
                         case 'view_score':
-
+                            this.rooms[messageData.room].timerEnd=false
+                            if( this.rooms[messageData.room].timer)
+                                clearInterval(this.rooms[messageData.room].timer)
+                            this.rooms[messageData.room].timerStart = false
+                            this.rooms[messageData.room].timerPause = false
+                            this.rooms[messageData.room].timerEnd = false
+                            this.rooms[messageData.room].time = timeRound
                             const price = this.rooms[room].questions[this.rooms[room].currentTask].price*10
                             let rightAnswerPut = false
                             for (let i of Object.values(this.rooms[messageData.room].score) ){
@@ -361,7 +367,7 @@ class GameSocketController{
                             this.sendScoreAdmin(this.rooms[messageData.room])
                             break
                         case 'next':
-                            this.rooms[messageData.room].timerEnd=false
+
                             this.rooms[messageData.room].stepRound='game'
                             this.rooms[messageData.room].currentTask++
                           //  console.log( this.rooms[messageData.room].currentTask)
@@ -372,12 +378,7 @@ class GameSocketController{
                             this.rooms[room].firstTime = -1
                             this.rooms[room].currentTimeStamp = -1
 
-                            if( this.rooms[messageData.room].timer)
-                                clearInterval(this.rooms[messageData.room].timer)
-                            this.rooms[messageData.room].timerStart = false
-                            this.rooms[messageData.room].timerPause = false
-                            this.rooms[messageData.room].timerEnd = false
-                            this.rooms[messageData.room].time = timeRound
+
 
                             for (let i of Object.values(this.rooms[messageData.room].score) ){
                                 i.round ++
