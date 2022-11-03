@@ -95,6 +95,7 @@ class GameSocketController{
                                 else
                                     this.rooms[messageData.room].quiz = 'none'
                                 const tasks = await questionService.getQuestionByQuizId(roomArchive.room.quiz)
+                                console.log('tasks', tasks.questions, tasks.questions.length - 1)
                                 tasks.questions[tasks.questions.length - 1].isFinishQuestion = true
                                 this.rooms[messageData.room].questions = tasks.questions
 
