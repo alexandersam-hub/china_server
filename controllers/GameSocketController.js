@@ -640,8 +640,8 @@ class GameSocketController{
                 score.push(room.score[team.teamCode] && room.score[team.teamCode].current?Math.round(room.score[team.teamCode].current):0)
             })
         const message = {warning:false,stepRound:'finish', score, teamsName, action:'get_score'}
-        console.log('finish',  this.rooms[messageData.room].stepRound)
-        console.log(  message)
+        // console.log('finish',  this.rooms[messageData.room].stepRound)
+        // console.log(  message)
         //console.log(message)
         if(room.gameSocket)
             room.gameSocket.send(JSON.stringify(message) )
