@@ -234,8 +234,8 @@ class GameSocketController{
 
 
                         case 'timer_start':
-                            if (this.rooms[room].currentTimeStamp<=0)
-                                this.rooms[room].currentTimeStamp = new Date().valueOf()
+                            // if (this.rooms[room].currentTimeStamp<=0 || !this.rooms[messageData.room].timerPause)
+                            //     this.rooms[room].currentTimeStamp = new Date().valueOf()
                             if( this.rooms[messageData.room].timer)
                                 clearInterval(this.rooms[messageData.room].timer)
                             this.rooms[messageData.room].timerStart = true
@@ -310,7 +310,17 @@ class GameSocketController{
                             // console.log(rightAnswerPut)
                             if (!rightAnswerPut &&  this.rooms[messageData.room].stepRound !== 'additional' && this.rooms[room].questions[this.rooms[room].currentTask].textAdditional){
                                 this.rooms[messageData.room].stepRound='additional'
+                                for (let i of Object.values(this.rooms[messageData.room].score) ){
+                                    i.isFirstTrue = false
+                                    i.isFirstFalse = false
+                                    i.right = 0
+                                    i.mistake = 0
+                                    i.currentTime=0
+                                }
                                 this.rooms[messageData.room].logAnswers[ this.rooms[messageData.room].currentTask] = {}
+                                this.rooms[room].isFirstWrongAnswer = false
+                                this.rooms[room].isFirstRightAnswer = false
+                                this.rooms[room].firstTime = -1
                                 this.sendGame(this.rooms[room])
                                 this.sendScoreAdmin(this.rooms[room])
                             }else{
@@ -327,7 +337,7 @@ class GameSocketController{
                             if(!this.rooms[messageData.room].logAnswers[ this.rooms[messageData.room].currentTask][messageData.token])
                                 this.rooms[messageData.room].logAnswers[ this.rooms[messageData.room].currentTask][messageData.token] = []
 
-                            const playerTime =  new Date().valueOf() - this.rooms[messageData.room].currentTimeStamp
+                            const playerTime = timeRound - this.rooms[messageData.room].time
                             if (!this.rooms[messageData.room].score[messageData.token]){
                                 this.rooms[messageData.room].score[messageData.token] = {players:0, round:0, last:0, current:0, right:0, mistake:0, currentTime: playerTime}
                             }
@@ -337,7 +347,7 @@ class GameSocketController{
                             // }
                             // console.log('score',this.rooms[messageData.room].score[room])
                             if (this.rooms[room].questions[this.rooms[room].currentTask].answer.toLowerCase().trim().indexOf(messageData.answer.toLowerCase())>=0){
-                                if(!this.rooms[room].isFirstRightAnswer || (this.rooms[room].firstTime && Math.floor(this.rooms[room].firstTime/1000)  === Math.floor(playerTime/1000))){
+                                if(!this.rooms[room].isFirstRightAnswer || this.rooms[room].firstTime  === playerTime){
 
                                     this.rooms[room].isFirstRightAnswer = true
                                     this.rooms[room].firstTime = playerTime
@@ -360,7 +370,7 @@ class GameSocketController{
                                 this.rooms[messageData.room].score[messageData.token].mistake+=1
                                 this.rooms[messageData.room].logAnswers[ this.rooms[messageData.room].currentTask][messageData.token].push({answer:messageData.answer, id:messageData.userId, warning:true})
                             }
-                            this.rooms[room].score[messageData.token].currentTime =  new Date().valueOf() - this.rooms[messageData.room].currentTimeStamp
+                            this.rooms[room].score[messageData.token].currentTime =  playerTime
                             this.rooms[messageData.room].score[messageData.token].players = this.rooms[messageData.room].usersSockets && this.rooms[messageData.room].usersSockets.filter(us=>us.teamCode === messageData.token )?this.rooms[messageData.room].usersSockets.filter(us=>us.teamCode === messageData.token ).length:0
                             // if(messageData.answer === this.rooms[messageData.room].questions[room.currentTask].answer)
                             //     console.log(messageData.answer, this.rooms[messageData.room].questions[room.currentTask] )
@@ -376,7 +386,7 @@ class GameSocketController{
                             this.rooms[room].isFirstWrongAnswer = false
                             this.rooms[room].isFirstRightAnswer = false
                             this.rooms[room].firstTime = -1
-                            this.rooms[room].currentTimeStamp = -1
+
 
 
 

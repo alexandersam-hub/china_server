@@ -61,11 +61,11 @@ const start = async ()=>{
         const server = https.createServer(options, app);
         server.listen(PORT_HTTPS)
 
-        await GameSocketController.init(server, process.env.URL_SERVER==='http://localhost:8011')
+        await GameSocketController.init(server, process.env.URL_SERVER==='http://localhost:8015')
 
         app.listen(PORT,()=>{
             console.log(`start on port ${PORT}`)
-            if(process.env.URL_SERVER==='http://localhost:8011')
+            if(process.env.URL_SERVER==='http://localhost:8015')
                 console.log(`is local server`)
         })
 
