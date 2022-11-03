@@ -95,10 +95,11 @@ class GameSocketController{
                                 else
                                     this.rooms[messageData.room].quiz = 'none'
                                 const tasks = await questionService.getQuestionByQuizId(roomArchive.room.quiz)
-                                console.log('tasks', tasks.questions, tasks.questions.length - 1)
-                                tasks.questions[tasks.questions.length - 1].isFinishQuestion = true
-                                this.rooms[messageData.room].questions = tasks.questions
 
+                                tasks.questions[tasks.questions.length - 1].isFinishQuestion = true
+
+                                this.rooms[messageData.room].questions = tasks.questions
+                                console.log('tasks', this.rooms[messageData.room].questions[tasks.questions.length - 1])
                                 const actualRoom = roomArchive.room.progress
                                 this.rooms[messageData.room].isStart = false
                                 this.rooms[messageData.room].stepRound='preparation'
