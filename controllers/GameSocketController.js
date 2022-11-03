@@ -318,6 +318,7 @@ class GameSocketController{
                                     i.currentTime=0
                                 }
                                 this.rooms[messageData.room].logAnswers[ this.rooms[messageData.room].currentTask] = {}
+
                                 this.rooms[room].isFirstWrongAnswer = false
                                 this.rooms[room].isFirstRightAnswer = false
                                 this.rooms[room].firstTime = -1
@@ -338,6 +339,7 @@ class GameSocketController{
                                 this.rooms[messageData.room].logAnswers[ this.rooms[messageData.room].currentTask][messageData.token] = []
 
                             const playerTime = timeRound - this.rooms[messageData.room].time
+                            console.log(playerTime)
                             if (!this.rooms[messageData.room].score[messageData.token]){
                                 this.rooms[messageData.room].score[messageData.token] = {players:0, round:0, last:0, current:0, right:0, mistake:0, currentTime: playerTime}
                             }
