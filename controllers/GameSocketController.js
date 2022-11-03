@@ -56,7 +56,7 @@ class GameSocketController{
         else
             this.rooms[roomId].quiz = 'none'
         const tasks = await questionService.getQuestionByQuizId(roomArchive.room.quiz)
-
+       tasks.questions[tasks.questions.length - 1].isFinishQuestion = true
         this.rooms[roomId].questions = tasks.questions
        this.rooms[roomId].teamsName = roomArchive.room.teamsName?roomArchive.room.teamsName:[]
        this.rooms[roomId].teamsCode = []
@@ -99,7 +99,7 @@ class GameSocketController{
                                 tasks.questions[tasks.questions.length - 1].isFinishQuestion = true
 
                                 this.rooms[messageData.room].questions = tasks.questions
-                                console.log('tasks', this.rooms[messageData.room].questions[tasks.questions.length - 1])
+                               // console.log('tasks', this.rooms[messageData.room].questions[tasks.questions.length - 1])
                                 const actualRoom = roomArchive.room.progress
                                 this.rooms[messageData.room].isStart = false
                                 this.rooms[messageData.room].stepRound='preparation'
