@@ -339,7 +339,6 @@ class GameSocketController{
                                 this.rooms[messageData.room].logAnswers[ this.rooms[messageData.room].currentTask][messageData.token] = []
 
                             const playerTime = timeRound - this.rooms[messageData.room].time
-                            console.log(playerTime)
                             if (!this.rooms[messageData.room].score[messageData.token]){
                                 this.rooms[messageData.room].score[messageData.token] = {players:0, round:0, last:0, current:0, right:0, mistake:0, currentTime: playerTime}
                             }
@@ -498,7 +497,7 @@ class GameSocketController{
             if (us.ws) {
                 message.userId = us.id
                 message.teamName = us.teamName
-                message.isAnswer = !!(room.logAnswers[room.currentTask] && room.logAnswers[room.currentTask][us.teamCode] && room.logAnswers[room.currentTask][us.teamCode].find(team => team.id === us.id));
+                message.isAnswer = !!(room.logAnswers[room.currentTask] && room.logAnswers[room.currentTask] && room.logAnswers[room.currentTask][us.teamCode] && room.logAnswers[room.currentTask][us.teamCode].find(team => team.id === us.id));
 
                 us.ws.send(JSON.stringify(message))
             }
@@ -636,7 +635,9 @@ class GameSocketController{
                 teamsName.push(team.teamName)
                 score.push(room.score[team.teamCode] && room.score[team.teamCode].current?Math.round(room.score[team.teamCode].current):0)
             })
-        const message = {warning:false,stepRound:room.stepRound, score, teamsName, action:'get_score'}
+        const message = {warning:false,stepRound:'finish', score, teamsName, action:'get_score'}
+        console.log('finish',  this.rooms[messageData.room].stepRound)
+        console.log(  message)
         //console.log(message)
         if(room.gameSocket)
             room.gameSocket.send(JSON.stringify(message) )
