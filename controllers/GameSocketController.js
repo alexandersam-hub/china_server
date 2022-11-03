@@ -219,6 +219,8 @@ class GameSocketController{
                             break
 
                         case 'finish':
+                            console.log('finish')
+                            this.rooms[messageData.room].isFinish = true
                             this.rooms[messageData.room].stepRound='finish'
                             this.finishSend(this.rooms[messageData.room])
                             break
